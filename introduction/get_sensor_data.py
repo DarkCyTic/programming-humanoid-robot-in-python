@@ -15,12 +15,23 @@ sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', '
 from spark_agent import SparkAgent
 
 
+def pretty(d, indent=0):
+   for key, value in d.items():
+      print('\t' * indent + str(key))
+      if isinstance(value, dict):
+         pretty(value, indent+1)
+      else:
+         print('\t' * (indent+1) + str(value))
+
+
 class MyAgent(SparkAgent):
     def think(self, perception):
         angle = 0
         temperature = 0
         # YOUR CODE HERE
         # get angle and temperature to current data of joint HeadYaw
+        angle = perception.joint['HeadYaw']
+        temperature = perception.joint_temperature['HeadYaw']
 
         print 'HeadYaw angle: ' + str(angle) + ' temperature: ' + str(temperature)
         return super(MyAgent, self).think(perception)
